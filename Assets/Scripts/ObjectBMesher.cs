@@ -1,19 +1,22 @@
 using UnityEngine;
 using MeshHelper;
+using System;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
 
 public class ObjectBMesher : MonoBehaviour
 {
+    [SerializeField]
     private MeshFilter meshFilter;
+    [SerializeField]
     private MeshRenderer meshRenderer;
 
     private bool RuntimeValidate()
     {
         if (meshFilter == null || meshRenderer == null)
         {
-            Debug.LogErrorFormat("Validation Error! {0}");
+            Debug.LogError("Validation Error!");
             return false;
         }
         return true;
@@ -26,16 +29,25 @@ public class ObjectBMesher : MonoBehaviour
 
         if (RuntimeValidate())
         {
-            CreateMesh();
+            meshFilter.mesh = CreateMesh();
         }
     }
 
     /// <summary>
     /// Creates ObjectB mesh - one cube
     /// </summary>
-    private void CreateMesh()
+    private Mesh CreateMesh()
     {
         Mesh cubeSphere = MeshHelper.MeshHelper.CreateCube(false);
-        meshFilter.mesh = cubeSphere;
+        return cubeSphere;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (RuntimeValidate())
+        {
+            //just create mesh on Gizmos - not ideal solution but works
+            Gizmos.DrawWireMesh(CreateMesh(), transform.position);
+        }
     }
 }

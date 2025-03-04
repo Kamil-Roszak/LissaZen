@@ -6,14 +6,16 @@ using MeshHelper;
 
 public class ObjectAMesher : MonoBehaviour
 {
+    [SerializeField]
     private MeshFilter meshFilter;
+    [SerializeField]
     private MeshRenderer meshRenderer;
 
     private bool RuntimeValidate()
     {
         if (meshFilter == null || meshRenderer == null)
         {
-            Debug.LogErrorFormat("Validation Error! {0}");
+            Debug.LogError("Validation Error! {0}");
             return false;
         }
         return true;
@@ -26,14 +28,14 @@ public class ObjectAMesher : MonoBehaviour
 
         if (RuntimeValidate())
         {
-            CreateMesh();
+            meshFilter.mesh = CreateMesh();
         }
     }
 
     /// <summary>
     /// Creates ObjectA mesh - one center sphere and 4 flipped around it
     /// </summary>
-    private void CreateMesh()
+    private Mesh CreateMesh()
     {
         float spheresMargin = 2f;
 
@@ -55,7 +57,7 @@ public class ObjectAMesher : MonoBehaviour
         Mesh combinedMesh = new Mesh();
         combinedMesh.CombineMeshes(combineInstances, true, true);
 
-        meshFilter.mesh = combinedMesh;
+        return combinedMesh;
     }
 
     private CombineInstance CreateCombinedInstance(Mesh mesh)
@@ -64,5 +66,14 @@ public class ObjectAMesher : MonoBehaviour
         instance.mesh = mesh;
         instance.transform = transform.localToWorldMatrix;
         return instance;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (RuntimeValidate())
+        {
+            //just create mesh on Gizmos - not ideal solution but works
+            Gizmos.DrawWireMesh(CreateMesh(), transform.position);
+        }
     }
 }
