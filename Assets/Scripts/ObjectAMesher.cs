@@ -64,7 +64,7 @@ public class ObjectAMesher : MonoBehaviour
     {
         CombineInstance instance = new CombineInstance();
         instance.mesh = mesh;
-        instance.transform = transform.localToWorldMatrix;
+        instance.transform = Matrix4x4.identity;
         return instance;
     }
 
@@ -73,7 +73,9 @@ public class ObjectAMesher : MonoBehaviour
         if (RuntimeValidate())
         {
             //just create mesh on Gizmos - not ideal solution but works
-            Gizmos.DrawWireMesh(CreateMesh(), transform.position);
+            Mesh mesh = CreateMesh();
+            Vector3 pivotOffset = mesh.bounds.center;
+            Gizmos.DrawWireMesh(mesh, transform.position - pivotOffset, Quaternion.identity, transform.localScale);
         }
     }
 }
