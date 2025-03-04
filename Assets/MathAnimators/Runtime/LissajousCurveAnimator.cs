@@ -18,10 +18,10 @@ public class LissajousCurveAnimator : MonoBehaviour
 
     [Header("Other")]
     public Vector3 offset;
-    public bool currentTransformIsOffset = true;
 
     [Header("Editor Gizmos Parameters")]
     public int gizmosResolution = 100;
+    public Color gizmosColor = Color.blue;
 
     private float _timer = 0f;
     private const float _tMax = 2 * Mathf.PI; 
@@ -30,7 +30,7 @@ public class LissajousCurveAnimator : MonoBehaviour
     void Update()
     {
         Vector2 lissajousCurveValue = MathAdditions.MathCurves.LissajousCurve(A, B, a, b, delta, _timer);
-        transform.position = new Vector3(lissajousCurveValue.x, transform.position.y, lissajousCurveValue.y) + offset;
+        transform.position = new Vector3(lissajousCurveValue.x, 0f, lissajousCurveValue.y) + offset;
         _timer += Time.deltaTime * timeScale;
         if(_timer > _tMax)
         {
@@ -41,16 +41,16 @@ public class LissajousCurveAnimator : MonoBehaviour
     private void OnDrawGizmos()
     {
         Vector2 curveValueForFirstPoint = MathAdditions.MathCurves.LissajousCurve(A, B, a, b, delta, _timer);
-        Vector3 previousPoint = new Vector3(curveValueForFirstPoint.x, transform.position.y, curveValueForFirstPoint.y) + offset;
+        Vector3 previousPoint = new Vector3(curveValueForFirstPoint.x, 0f, curveValueForFirstPoint.y) + offset;
 
         for(int i = 1; i < gizmosResolution; i++)
         {
             float t = i * (_tMax / gizmosResolution);
             Vector2 currentCurveValue = MathAdditions.MathCurves.LissajousCurve(A, B, a, b, delta, t);
-            Vector3 currentPoint = new Vector3(currentCurveValue.x, transform.position.y, currentCurveValue.y) + offset;
+            Vector3 currentPoint = new Vector3(currentCurveValue.x, 0f, currentCurveValue.y) + offset;
             Gizmos.DrawLine(previousPoint, currentPoint);
             previousPoint = currentPoint;
-            Gizmos.color = Color.blue;
+            Gizmos.color = gizmosColor;
         }
     }
 }
