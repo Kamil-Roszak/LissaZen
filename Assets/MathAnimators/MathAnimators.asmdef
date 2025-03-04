@@ -1,0 +1,16 @@
+{
+    "name": "MathAnimators",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7fbb990d81f27284580d07ebf331cd76"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
