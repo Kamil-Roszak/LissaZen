@@ -64,7 +64,7 @@ public class ObjectAMesher : MonoBehaviour
     {
         CombineInstance instance = new CombineInstance();
         instance.mesh = mesh;
-        instance.transform = transform.localToWorldMatrix;
+        instance.transform = Matrix4x4.identity;
         return instance;
     }
 
